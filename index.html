@@ -1,130 +1,114 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Comida</title>
-    <style>
-        /* Reset básico */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-
-        .container {
-            background: #ffffff;
-            padding: 25px 30px;
-            border-radius: 20px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 400px;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-
-        .linea {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 15px;
-        }
-
-        .linea label {
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #555;
-        }
-
-        input[type="number"] {
-            padding: 12px 15px;
-            border: 2px solid #ddd;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: 0.3s;
-        }
-
-        input[type="number"]:focus {
-            border-color: #ff9500;
-            outline: none;
-            box-shadow: 0 0 5px rgba(255, 149, 0, 0.3);
-        }
-
-        #resultado {
-            margin-top: 25px;
-            text-align: center;
-            font-weight: 700;
-            font-size: 22px;
-            color: #ff9500;
-            padding: 15px;
-            border-radius: 12px;
-            background: #fff3e0;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-        }
-
-        @media(min-width: 600px){
-            .linea {
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-            }
-            .linea label {
-                margin-bottom: 0;
-            }
-            input[type="number"] {
-                width: 100px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora de Comida</title>
+<style>
+    * { box-sizing: border-box; margin:0; padding:0; }
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #f0f4f8;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        padding: 20px;
+        transition: padding-bottom 0.3s;
+    }
+    .container {
+        background: #fff;
+        padding: 30px 35px;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        width: 100%;
+        max-width: 450px;
+        transition: transform 0.3s;
+        margin-top: 50px;
+    }
+    h2 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+        font-size: 28px;
+    }
+    .linea {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+    .linea span {
+        font-size: 36px;
+        margin-right: 20px;
+        flex-shrink: 0;
+    }
+    input[type="number"] {
+    width: 180px; /* ancho reducido */
+    padding: 18px 15px; /* mantiene el tamaño del texto y comodidad */
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    font-size: 20px;
+    transition: 0.3s;
+}
+    input[type="number"]:focus {
+        border-color: #ff9500;
+        outline: none;
+        box-shadow: 0 0 8px rgba(255, 149, 0, 0.3);
+    }
+    #resultado {
+        margin-top: 30px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 28px;
+        color: #ff9500;
+        padding: 18px;
+        border-radius: 15px;
+        background: #fff3e0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+</style>
 </head>
 <body>
-    <div class="container">
-        <h2>Calculadora de Comida</h2>
+<div class="container" id="calcContainer">
+    <h2>Calculadora de Comida</h2>
 
-        <div class="linea">
-            <label>Jugo (S/1.50):</label>
-            <input type="number" id="jugo" placeholder="0" min="0" oninput="calcularTotal()">
-        </div>
-
-        <div class="linea">
-            <label>Sándwich (S/1.50):</label>
-            <input type="number" id="sandwich" placeholder="0" min="0" oninput="calcularTotal()">
-        </div>
-
-        <div class="linea">
-            <label>Cachanga (S/1.00):</label>
-            <input type="number" id="cachanga" placeholder="0" min="0" oninput="calcularTotal()">
-        </div>
-
-        <div id="resultado">
-            Total: S/0.00
-        </div>
+    <div class="linea">
+        <span>🥤</span>
+        <input type="number" id="jugo" placeholder="Cantidad de jugos" min="0" step="1" oninput="calcularTotal()" onfocus="scrollUp()" onblur="scrollDown()">
     </div>
 
-    <script>
-        function calcularTotal() {
-            const jugo = Number(document.getElementById('jugo').value) || 0;
-            const sandwich = Number(document.getElementById('sandwich').value) || 0;
-            const cachanga = Number(document.getElementById('cachanga').value) || 0;
+    <div class="linea">
+        <span>🥪</span>
+        <input type="number" id="sandwich" placeholder="Cantidad de sándwiches" min="0" step="1" oninput="calcularTotal()" onfocus="scrollUp()" onblur="scrollDown()">
+    </div>
 
-            const total = (jugo * 1.50) + (sandwich * 1.50) + (cachanga * 1.00);
-            document.getElementById('resultado').textContent = `Total: S/${total.toFixed(2)}`;
-        }
-    </script>
+    <div class="linea">
+        <span>🍩</span>
+        <input type="number" id="cachanga" placeholder="Cantidad de cachangas" min="0" step="1" oninput="calcularTotal()" onfocus="scrollUp()" onblur="scrollDown()">
+    </div>
+
+    <div id="resultado">
+        Total: S/0.00
+    </div>
+</div>
+
+<script>
+function calcularTotal() {
+    const jugo = Number(document.getElementById('jugo').value) || 0;
+    const sandwich = Number(document.getElementById('sandwich').value) || 0;
+    const cachanga = Number(document.getElementById('cachanga').value) || 0;
+    const total = (jugo * 1.50) + (sandwich * 1.50) + (cachanga * 1.00);
+    document.getElementById('resultado').textContent = `Total: S/${total.toFixed(2)}`;
+}
+
+// Mueve la calculadora cuando aparece el teclado
+function scrollUp() {
+    document.getElementById('calcContainer').style.transform = "translateY(-120px)";
+}
+function scrollDown() {
+    document.getElementById('calcContainer').style.transform = "translateY(0)";
+}
+</script>
 </body>
 </html>
-
-
